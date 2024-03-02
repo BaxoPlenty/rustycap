@@ -1,3 +1,5 @@
+[![Crates.io](https://img.shields.io/crates/v/rustycap.svg)](https://crates.io/crates/rustycap) [![Documentation](https://docs.rs/rustycap/badge.svg)](https://docs.rs/rustycap)
+
 # rustycap
 
 The official [CapBypass](https://capbypass.com/) wrapper for Rust.

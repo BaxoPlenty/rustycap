@@ -1,13 +1,20 @@
-use anyhow::Result;
-use models::BalanceResponse;
+use std::time::Duration;
+
+use anyhow::{anyhow, Result};
+use models::{BalanceResponse, CreateTaskResponse, TaskInfo, TaskResultResponse};
 use reqwest::Client;
 use serde_json::json;
+use tasks::Task;
+use tokio::time::sleep;
 
 pub mod models;
+pub mod tasks;
 
 pub struct Solver {
     client_key: String,
     client: Client,
+    delay: Duration,
+    use_sleep: bool,
 }
 
 impl Solver {
@@ -18,7 +25,27 @@ impl Solver {
         Self {
             client_key: key.into(),
             client: Client::new(),
+            use_sleep: true,
+            delay: Duration::from_millis(2500),
         }
+    }
+
+    /// Configures the solver to not use a sleep in the `create_and_wait` function
+    pub fn no_sleep(mut self) -> Self {
+        self.use_sleep = false;
+
+        self
+    }
+
+    /// Sets the delay for the `create_and_wait` function
+    ///
+    /// # Arguments
+    ///
+    /// * `delay` - The milliseconds to wait after each `get_task_info` request
+    pub fn delay(mut self, delay: u64) -> Self {
+        self.delay = Duration::from_millis(delay);
+
+        self
     }
 
     pub async fn get_balance(&self) -> Result<BalanceResponse> {
@@ -36,5 +63,95 @@ impl Solver {
         let response: BalanceResponse = response.json().await?;
 
         Ok(response)
+    }
+
+    pub async fn create_task<T>(&self, task: T) -> Result<CreateTaskResponse>
+    where
+        T: Task,
+    {
+        let task_data = task.serialize();
+        let data = json!({
+            "clientKey": self.client_key,
+            "task": task_data,
+        });
+        let request = self
+            .client
+            .post("https://capbypass.com/api/createTask")
+            .header("content-type", "application/json")
+            .json(&data)
+            .send()
+            .await?;
+        let response = request.error_for_status()?;
+        let result: CreateTaskResponse = response.json().await?;
+
+        Ok(result)
+    }
+
+    pub async fn get_task_info<T>(&self, task_id: T) -> Result<TaskInfo>
+    where
+        T: Into<String>,
+    {
+        let task_id = task_id.into();
+        let data = json!({
+            "clientKey": self.client_key,
+            "taskId": task_id,
+        });
+        let request = self
+            .client
+            .post("https://capbypass.com/api/getTaskResult")
+            .header("content-type", "application/json")
+            .json(&data)
+            .send()
+            .await?;
+        let response = request.error_for_status()?;
+        let response: TaskResultResponse = response.json().await?;
+
+        match response.status.as_str() {
+            "DONE" => {
+                if let Some(solution) = response.solution {
+                    Ok(TaskInfo::Done(solution))
+                } else {
+                    Ok(TaskInfo::Failed)
+                }
+            }
+            "FAILED" => Ok(TaskInfo::Failed),
+            "DOES_NOT_EXIST" => Ok(TaskInfo::DoesNotExist),
+            "PROCESSING" => Ok(TaskInfo::Processing),
+            _ => Err(anyhow!(format!("Unknown task status: {}", response.status))),
+        }
+    }
+
+    /// Creates a task and waits for the task to resolve
+    /// #### ! This function loops and may use `tokio::time::sleep`
+    ///
+    /// # Arguments
+    ///
+    /// * `task` - A struct implementing the `Task` trait. Example: `FunCaptchaTask`
+    pub async fn create_and_wait<T>(&self, task: T) -> Result<String>
+    where
+        T: Task,
+    {
+        let created = self.create_task(task).await?;
+
+        if created.error_id == 0 {
+            let task_id = created.task_id;
+
+            loop {
+                let status = self.get_task_info(&task_id).await?;
+
+                match status {
+                    TaskInfo::DoesNotExist => return Err(anyhow!("Task does not exist")),
+                    TaskInfo::Done(solution) => return Ok(solution),
+                    TaskInfo::Failed => return Err(anyhow!("Failed")),
+                    TaskInfo::Processing => {}
+                };
+
+                if self.use_sleep {
+                    sleep(self.delay).await;
+                }
+            }
+        } else {
+            Err(anyhow!("Error"))
+        }
     }
 }

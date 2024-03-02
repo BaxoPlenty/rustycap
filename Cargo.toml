@@ -1,0 +1,16 @@
+[package]
+name = "rustycap"
+authors = ["BaxoPlenty"]
+description = "A CapBypass wrapper for Rust"
+repository = "https://github.com/BaxoPlenty/rustycap"
+license-file = "LICENSE"
+readme = "README.md"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+tokio = { version = "1.36.0", features = ["macros", "rt-multi-thread"] }
+serde = { version = "1.0.197", features = ["derive"] }
+reqwest = { version = "0.11.24", features = ["json"] }
+anyhow = "1.0.80"
+serde_json = "1.0.114"

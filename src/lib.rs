@@ -18,6 +18,19 @@ pub struct Solver {
 }
 
 impl Solver {
+    /// Creates a new solver instance
+    ///
+    /// # Arguments
+    ///
+    /// * `key` - A string containing the CapBypass key
+    ///
+    /// # Example
+    ///
+    /// ```rust
+    /// use rustycap::Solver;
+    ///
+    /// let solver = Solver::new("CB-XXXXXXXXX");
+    /// ```
     pub fn new<T>(key: T) -> Self
     where
         T: Into<String>,
@@ -48,6 +61,7 @@ impl Solver {
         self
     }
 
+    /// Gets your current CapBypass balance
     pub async fn get_balance(&self) -> Result<BalanceResponse> {
         let data = json!({
             "clientKey": self.client_key,
@@ -65,6 +79,11 @@ impl Solver {
         Ok(response)
     }
 
+    /// Creates a task and returns the `task_id` and `error_id`
+    ///
+    /// # Arguments
+    ///
+    /// * `task` - A struct implementing the `Task` trait. Example: `FunCaptchaTask`
     pub async fn create_task<T>(&self, task: T) -> Result<CreateTaskResponse>
     where
         T: Task,
@@ -87,6 +106,7 @@ impl Solver {
         Ok(result)
     }
 
+    /// Retrieves the current task info for the given `task_id`
     pub async fn get_task_info<T>(&self, task_id: T) -> Result<TaskInfo>
     where
         T: Into<String>,

@@ -2,9 +2,12 @@ use std::collections::HashMap;
 
 use serde_json::{Map, Value};
 
+/// This module contains all tasks used for classification
 pub mod classification;
-pub mod funcaptcha;
+/// This module contains all tasks used for solving captchas and retrieving a token
+pub mod token;
 
+/// Trait used for implementing tasks
 pub trait Task {
     fn task_type(&self) -> &'static str;
     fn properties(&self) -> HashMap<String, String>;

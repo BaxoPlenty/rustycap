@@ -1,3 +1,16 @@
+//! The official CapBypass wrapper for Rust.
+//!
+//! # Example
+//!
+//! ```rust
+//! use rustycap::Solver;
+//! use rustycap::tasks::token::FunCaptchaTask;
+//!
+//! let solver = Solver::new("API-KEY");
+//! let task = FunCaptchaTask::new("https://example.com/", "abcdefghijklmnop", "host:port");
+//! let solution = solver.create_and_wait(task).await?;
+//! ```
+
 use std::time::Duration;
 
 use anyhow::{anyhow, Result};

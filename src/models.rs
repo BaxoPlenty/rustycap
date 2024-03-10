@@ -3,7 +3,7 @@ use serde::{Deserialize, Serialize};
 #[derive(Debug)]
 pub enum TaskInfo {
     Processing,
-    Failed,
+    Failed(String),
     DoesNotExist,
     Done(String),
 }

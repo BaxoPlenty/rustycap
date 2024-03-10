@@ -131,10 +131,14 @@ impl Solver {
                 if let Some(solution) = response.solution {
                     Ok(TaskInfo::Done(solution))
                 } else {
-                    Ok(TaskInfo::Failed)
+                    Ok(TaskInfo::Failed("Invalid response".to_string()))
                 }
             }
-            "FAILED" => Ok(TaskInfo::Failed),
+            "FAILED" => Ok(TaskInfo::Failed(
+                response
+                    .error_description
+                    .unwrap_or("errorDescription was null".to_string()),
+            )),
             "DOES_NOT_EXIST" => Ok(TaskInfo::DoesNotExist),
             "PROCESSING" => Ok(TaskInfo::Processing),
             _ => Err(anyhow!(format!("Unknown task status: {}", response.status))),
@@ -162,7 +166,9 @@ impl Solver {
                 match status {
                     TaskInfo::DoesNotExist => return Err(anyhow!("Task does not exist")),
                     TaskInfo::Done(solution) => return Ok(solution),
-                    TaskInfo::Failed => return Err(anyhow!("Task failed to solve")),
+                    TaskInfo::Failed(reason) => {
+                        return Err(anyhow!(format!("Task failed to solve: {}", reason)))
+                    }
                     TaskInfo::Processing => {}
                 };
 

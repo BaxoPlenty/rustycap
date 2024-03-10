@@ -13,10 +13,10 @@ use rustycap::Solver;
 let solver = Solver::new("CAPBYPASS_KEY");
 ```
 
-## Retreiving Balance
+## Retrieve Balance
 
 ```rust
-let balance = solver.get_balance().await.expect("Unable to retreive balance");
+let balance = solver.get_balance().await.expect("Unable to retrieve balance");
 let credits = balance.credits;
 ```
 

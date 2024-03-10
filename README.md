@@ -41,5 +41,5 @@ println!("Received token: {}", solution);
 |-------|-------------|
 | `TaskInfo::Processing` | The task is being processed |
 | `TaskInfo::DoesNotExist` | The task was unable to be found |
-| `TaskInfo::Failed` | The task failed |
+| `TaskInfo::Failed(String)` | The task failed and the `String` contains the error description |
 | `TaskInfo::Done(String)` | The task was successful. The `String` is the solution. |

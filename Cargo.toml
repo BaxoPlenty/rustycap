@@ -2,7 +2,7 @@
 name = "rustycap"
 authors = ["BaxoPlenty"]
 description = "A CapBypass wrapper for Rust"
-version = "0.1.1"
+version = "0.1.2"
 edition = "2021"
 repository = "https://github.com/BaxoPlenty/rustycap"
 license-file = "LICENSE"

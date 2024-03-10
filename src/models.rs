@@ -26,5 +26,6 @@ pub struct CreateTaskResponse {
 pub struct TaskResultResponse {
     pub error_id: usize,
     pub status: String,
+    pub error_description: Option<String>,
     pub solution: Option<String>,
 }

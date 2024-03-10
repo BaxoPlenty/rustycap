@@ -2,6 +2,7 @@ use std::collections::HashMap;
 
 use serde_json::{Map, Value};
 
+pub mod classification;
 pub mod funcaptcha;
 
 pub trait Task {

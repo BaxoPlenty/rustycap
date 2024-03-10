@@ -16,7 +16,7 @@ impl FunCaptchaTask {
     /// Creates a `FunCaptchaTask`
     ///
     /// # Arguments
-    /// 
+    ///
     /// * `url` - A string containing the website url. Example: `https://example.com/`
     /// * `public_key` - A string containing the website public key
     /// * `proxy` - A string containing the proxy. Format: `host:port` OR `host:port:user:password`
@@ -25,12 +25,12 @@ impl FunCaptchaTask {
     ///
     /// * `data(Serialize)` - This function can be used to pass data like a blob.
     /// * `subdomain(Into<String>)` - Sets an optional subdomain for funcaptcha. Example: `client-api.arkoselabs.com`
-    /// 
+    ///
     /// # Example
     ///
     /// ```rust
     /// use rustycap::tasks::funcaptcha::FunCaptchaTask;
-    /// 
+    ///
     /// let task = FunCaptchaTask::new("https://example.com/", "abcdefghijklmnop", "host:port");
     /// ```
     pub fn new<T>(url: T, public_key: T, proxy: T) -> Self

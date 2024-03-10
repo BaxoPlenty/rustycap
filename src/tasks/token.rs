@@ -29,7 +29,7 @@ impl FunCaptchaTask {
     /// # Example
     ///
     /// ```rust
-    /// use rustycap::tasks::funcaptcha::FunCaptchaTask;
+    /// use rustycap::tasks::token::FunCaptchaTask;
     ///
     /// let task = FunCaptchaTask::new("https://example.com/", "abcdefghijklmnop", "host:port");
     /// ```

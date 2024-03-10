@@ -4,7 +4,14 @@
 
 The official [CapBypass](https://capbypass.com/) wrapper for Rust.
 
+# Features
+
+| Name    | Description                                                                     |
+| ------- | ------------------------------------------------------------------------------- |
+| `image` | Enables the use of an image to base64 encoding library for classification tasks |
+
 # Examples
+
 ## Initialization of `Solver`
 
 ```rust
@@ -37,9 +44,10 @@ println!("Received token: {}", solution);
 ```
 
 # TaskInfo enum
-| Field | Description |
-|-------|-------------|
-| `TaskInfo::Processing` | The task is being processed |
-| `TaskInfo::DoesNotExist` | The task was unable to be found |
+
+| Field                      | Description                                                     |
+| -------------------------- | --------------------------------------------------------------- |
+| `TaskInfo::Processing`     | The task is being processed                                     |
+| `TaskInfo::DoesNotExist`   | The task was unable to be found                                 |
 | `TaskInfo::Failed(String)` | The task failed and the `String` contains the error description |
-| `TaskInfo::Done(String)` | The task was successful. The `String` is the solution. |
+| `TaskInfo::Done(String)`   | The task was successful. The `String` is the solution.          |

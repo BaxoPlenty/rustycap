@@ -162,7 +162,7 @@ impl Solver {
                 match status {
                     TaskInfo::DoesNotExist => return Err(anyhow!("Task does not exist")),
                     TaskInfo::Done(solution) => return Ok(solution),
-                    TaskInfo::Failed => return Err(anyhow!("Failed")),
+                    TaskInfo::Failed => return Err(anyhow!("Task failed to solve")),
                     TaskInfo::Processing => {}
                 };
 

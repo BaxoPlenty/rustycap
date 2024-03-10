@@ -1,3 +1,4 @@
+use anyhow::Result;
 use std::collections::HashMap;
 
 use super::Task;
@@ -9,6 +10,10 @@ pub struct FunCaptchaClassificationTask {
 
 impl FunCaptchaClassificationTask {
     /// Creates a `FunCaptchaClassification` Task
+    ///
+    /// # Recommendation
+    ///
+    /// Use the `image` feature to skip the encoding part using the `FunCaptchaClassificationTask::from_image_path(String)` function.
     ///
     /// # Arguments
     ///
@@ -36,6 +41,38 @@ impl FunCaptchaClassificationTask {
             image: encoded_image.into(),
             question: question.into(),
         }
+    }
+
+    #[cfg(feature = "image")]
+    pub fn from_image_path<T>(path: T, question: T) -> Result<Self>
+    where
+        T: Into<String>,
+    {
+        use crate::image::encode_image;
+        use std::fs::read;
+
+        let content = read(path.into())?;
+        let encoded = encode_image(&content)?;
+
+        Ok(Self {
+            image: encoded,
+            question: question.into(),
+        })
+    }
+
+    #[cfg(feature = "image")]
+    pub fn from_image<T>(image: &[u8], question: T) -> Result<Self>
+    where
+        T: Into<String>,
+    {
+        use crate::image::encode_image;
+
+        let encoded = encode_image(image)?;
+
+        Ok(Self {
+            image: encoded,
+            question: question.into(),
+        })
     }
 }
 

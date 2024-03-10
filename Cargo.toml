@@ -10,8 +10,13 @@ readme = "README.md"
 keywords = ["capbypass", "captcha", "arkoselabs"]
 
 [dependencies]
+base64 = { version = "0.22.0", optional = true }
+imghdr = { version = "0.7.0", optional = true }
 tokio = { version = "1.36.0", features = ["macros", "rt-multi-thread"] }
 serde = { version = "1.0.197", features = ["derive"] }
 reqwest = { version = "0.11.24", features = ["json"] }
 anyhow = "1.0.80"
 serde_json = "1.0.114"
+
+[features]
+image = ["dep:base64", "dep:imghdr"]

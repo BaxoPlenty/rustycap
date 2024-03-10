@@ -7,6 +7,8 @@ use serde_json::json;
 use tasks::Task;
 use tokio::time::sleep;
 
+#[cfg(feature = "image")]
+pub mod image;
 pub mod models;
 pub mod tasks;
 

@@ -1,6 +1,6 @@
-use std::collections::HashMap;
 #[cfg(feature = "image")]
 use anyhow::Result;
+use std::collections::HashMap;
 
 use super::Task;
 
@@ -45,6 +45,24 @@ impl FunCaptchaClassificationTask {
     }
 
     #[cfg(feature = "image")]
+    /// Creates a `FunCaptchaClassification` Task
+    ///
+    /// # Arguments
+    ///
+    /// * `path` - The image path
+    /// * `question` - The task question. Example: `Use the arrows to rotate the object to face in the direction of the hand`
+    ///
+    /// # Solution
+    ///
+    /// The solution to this task will be the tile index of the correct image as a string. **Remember: Tile indexes start at 0**
+    ///
+    /// # Example
+    ///
+    /// ```rust
+    /// use rustycap::tasks::classification::FunCaptchaClassificationTask;
+    ///
+    /// let task = FunCaptchaClassificationTask::from_image_path("image.png", "Use the arrows to rotate the object to face in the direction of the hand");
+    /// ```
     pub fn from_image_path<T>(path: T, question: T) -> Result<Self>
     where
         T: Into<String>,
@@ -62,6 +80,26 @@ impl FunCaptchaClassificationTask {
     }
 
     #[cfg(feature = "image")]
+    /// Creates a `FunCaptchaClassification` Task
+    ///
+    /// # Arguments
+    ///
+    /// * `image` - The image bytes
+    /// * `question` - The task question. Example: `Use the arrows to rotate the object to face in the direction of the hand`
+    ///
+    /// # Solution
+    ///
+    /// The solution to this task will be the tile index of the correct image as a string. **Remember: Tile indexes start at 0**
+    ///
+    /// # Example
+    ///
+    /// ```rust
+    /// use rustycap::tasks::classification::FunCaptchaClassificationTask;
+    /// use std::fs::read;
+    ///
+    /// let image = read("image-base64.txt").expect("Unable to read image.");
+    /// let task = FunCaptchaClassificationTask::from_image(&image, "Use the arrows to rotate the object to face in the direction of the hand");
+    /// ```
     pub fn from_image<T>(image: &[u8], question: T) -> Result<Self>
     where
         T: Into<String>,

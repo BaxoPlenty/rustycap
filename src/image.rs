@@ -2,6 +2,7 @@ use anyhow::{anyhow, Result};
 use base64::prelude::*;
 use imghdr::{from_bytes, Type};
 
+/// Basically a to_string for the `imghdr::Type` enum
 pub fn image_type_to_string(image_type: Type) -> &'static str {
     match image_type {
         Type::Bgp => "bgp",
@@ -24,6 +25,11 @@ pub fn image_type_to_string(image_type: Type) -> &'static str {
     }
 }
 
+/// Encodes image bytes into their base64 representation
+///
+/// # Arguments
+///
+/// * `image` - The image bytes
 pub fn encode_image(image: &[u8]) -> Result<String> {
     let image_type = from_bytes(image);
 

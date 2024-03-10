@@ -1,5 +1,6 @@
-use anyhow::Result;
 use std::collections::HashMap;
+#[cfg(feature = "image")]
+use anyhow::Result;
 
 use super::Task;
 

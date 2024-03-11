@@ -2,7 +2,7 @@
 name = "rustycap"
 authors = ["BaxoPlenty"]
 description = "Official CapBypass wrapper for Rust"
-version = "1.1.0"
+version = "1.1.1"
 edition = "2021"
 repository = "https://github.com/BaxoPlenty/rustycap"
 license-file = "LICENSE"
@@ -12,7 +12,7 @@ keywords = ["capbypass", "captcha", "arkoselabs"]
 [dependencies]
 base64 = { version = "0.22.0", optional = true }
 imghdr = { version = "0.7.0", optional = true }
-tokio = { version = "1.36.0", features = ["macros", "rt-multi-thread"] }
+tokio = { version = "1.36.0" }
 serde = { version = "1.0.197", features = ["derive"] }
 reqwest = { version = "0.11.24", features = ["json"] }
 anyhow = "1.0.80"

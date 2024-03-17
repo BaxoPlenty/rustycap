@@ -199,6 +199,7 @@ impl Solver {
     }
 }
 
+/// Fetches the current status and problems from the public api
 pub async fn get_status() -> Result<ServiceStatusResponse> {
     let response = get("https://capbypass.com/api/status").await?;
     let data = response.json().await?;

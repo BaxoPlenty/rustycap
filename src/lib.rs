@@ -14,8 +14,10 @@
 use std::time::Duration;
 
 use anyhow::{anyhow, Result};
-use models::{BalanceResponse, CreateTaskResponse, TaskInfo, TaskResultResponse};
-use reqwest::Client;
+use models::{
+    BalanceResponse, CreateTaskResponse, ServiceStatusResponse, TaskInfo, TaskResultResponse,
+};
+use reqwest::{get, Client};
 use serde_json::json;
 use tasks::Task;
 use tokio::time::sleep;
@@ -195,4 +197,11 @@ impl Solver {
             Err(anyhow!("Error"))
         }
     }
+}
+
+pub async fn get_status() -> Result<ServiceStatusResponse> {
+    let response = get("https://capbypass.com/api/status").await?;
+    let data = response.json().await?;
+
+    Ok(data)
 }
